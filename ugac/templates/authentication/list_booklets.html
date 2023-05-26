@@ -1,0 +1,21 @@
+{% extends 'authentication/index.html' %}
+
+{% block content %}
+  <h2>List of Booklets</h2>
+  {% if user.is_superuser %}
+    <!-- Admin view -->
+    <a href="{% url 'add_booklet' %}" class="btn btn-primary">Add New Booklet</a>
+  {% endif %}
+  <ul>
+    {% for booklet in booklets %}
+      <li>
+        {{ booklet.title }} - {{ booklet.uploaded_at }}
+        <p>{{booklet.pdf.url}}</p>
+        <a href="{{ booklet.pdf.url }}" download >Download</a>
+        {% if user.is_superuser %}
+          <a href="{% url 'delete_booklet' booklet.id %}">Delete</a>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

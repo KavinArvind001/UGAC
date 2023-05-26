@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booklet Repository</title>
+</head>
+<body>
+  {% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+    <a href="{% url 'list_booklets' %}">Booklets</a>
+  {% else %}
+    <a href="{% url 'signin' %}">Login</a> | <a href="{% url 'signup' %}">Signup</a>
+  {% endif %}
+  {% block content %}
+  {% endblock %}
+</body>
+</html>
