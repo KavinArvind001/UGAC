@@ -1,35 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
+    <script>
+        function closemsg(){
+            document.getElementById("msg").innerHTML="";
+        }
+    </script>
 <head>
+    <script></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home Page</title>
 </head>
 <body>
-    <h3>Signup</h3>
+    {% for message in messages %}
+    <div id="msg">
+        <strong>Message:</strong> {{ message }}
+        <button type="button" onclick="closemsg()">
+            X
+        </button>
+    </div>
+    {% endfor %}
+    <div style="background-color: aqua; width: 500px; padding: 20px; margin: auto;">
+    <h2 style="text-align: center;">Signup</h2>
     <form action="/signup" method="post">
         {% csrf_token %}
-        <label for="">Username</label>
+        <label for="">Create an Username    :</label>
         <input type="text" id="username" name="username" placeholder="Create an username (only letters and numbers)">
         <br>
-        <label for="">fname</label>
-        <input type="text" id="fname" name="fname" placeholder="Create an fname (only letters and numbers)">
+        <label for="">Enter your first name :</label>
+        <input type="text" id="fname" name="fname" placeholder="first name">
         <br>
-        <label for="">lname</label>
-        <input type="text" id="lname" name="lname" placeholder="Create an lname (only letters and numbers)">
+        <label for="">Enter your last name  :</label>
+        <input type="text" id="lname" name="lname" placeholder="last name">
         <br>
-        <label for="">email</label>
-        <input type="email" id="email" name="email" placeholder="Create an email (only letters and numbers)">
+        <label for="">Enter email adress    :</label>
+        <input type="email" id="email" name="email" placeholder="email">
         <br>
-        <label for="">password</label>
-        <input type="password" id="pass1" name="pass1" placeholder="Create an pass1 (only letters and numbers)">
+        <label for="">Enter password        :</label>
+        <input type="password" id="pass1" name="pass1" placeholder="Create an password">
         <br>
-        <label for="">confirm your password</label>
-        <input type="password" id="pass2" name="pass2" placeholder="Create an pass2 (only letters and numbers)">
+        <label for="">confirm your password :</label>
+        <input type="password" id="pass2" name="pass2" placeholder="Comfirm password">
         <br>
         <button type="submit">Sign Up</button>
     </form>
-
+    </div>
 </body>
 </html>

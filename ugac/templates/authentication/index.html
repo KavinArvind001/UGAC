@@ -4,15 +4,24 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Page</title>
+    <style>
+        table, th, td{
+            border: 1px solid black;
+            padding: 5px;
+        }
+      </style>
+    <title>UGAC Home Page</title>
 </head>
-<body>
-    <h3>Welcome to KAVIN's project for UGAC WEB CONVENER POST</h3>
-
-    <button type="submit"><a href="signout">SignOut</a></button>
-    <button type="submit"><a href="signup">SignUp</a></button>
-    <button type="submit"><a href="signin">SignIn</a></button>
-
+<body style="background-color: aqua;">
+    <h1 style="text-align: center;">Welcome to KAVIN's project for<br>UGAC WEB CONVENER POST</h1>
+    {% load static %}
+    <img src="{% static 'ugac_logo.png' %}" alt="LOGO" width="300" height="300" style="display: block;margin: auto;">
+    <br>
+    <div style="text-align: center;">
+        <button type="submit" style="border-radius: 10px;font-size: larger;padding: 10px;"><a href="signin">SignIn</a></button> 
+        <button type="submit" style="border-radius: 10px;font-size: larger;padding: 10px;"><a href="signup">SignUp</a></button>
+        <button type="submit" style="border-radius: 10px;font-size: larger;padding: 10px;"><a href="signout">SignOut</a></button>
+    </div>
 {% block content %}
 {% endblock %}
 </body>

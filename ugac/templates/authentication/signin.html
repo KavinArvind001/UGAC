@@ -1,5 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+<style>
+
+</style>
+<script>
+    function closemsg(){
+        document.getElementById("msg").innerHTML="";
+    }
+</script>
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,15 +17,16 @@
 <body>
 
     {% for message in messages %}
-    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+    <div id="msg">
         <strong>Message:</strong> {{ message }}
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
+        <button type="button" onclick="closemsg()">
+            X
+        </button>
     </div>
     {% endfor %}
 
-    <h3>Log In to your account!</h3>
+<div style="background-color: aqua; width: 500px; text-align: center; padding: 20px; margin: auto;">
+    <h2>Log In to your account!</h3>
     <form method="post" enctype="multipart/form-data" action="signined" class="mb-2">
         {% csrf_token %}
         <div class="form-group">
@@ -31,5 +40,7 @@
 
         <button type="submit">log in</button>
     </form>
+</div>
+
 </body>
 </html>

@@ -9,43 +9,72 @@ from django.contrib.auth import login, authenticate,logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 import os
+from django.core.exceptions import SuspiciousOperation
+from django.views.decorators.csrf import csrf_exempt
+from django.core.validators import validate_email
 
 # Create your views here.
 def home(request):
     return render(request, "authentication/index.html")
+
+@csrf_exempt
+
 def signup(request):
-    if request.method == "POST":
-        username= request.POST['username']
-        fname= request.POST['fname']
-        lname= request.POST['lname']
-        email= request.POST['email']
-        pass1=request.POST['pass1']
-        pass2=request.POST['pass2']
-        if pass1 != pass2:
-            return HttpResponse('<html><script>alert("paswords didnt\'t match");</script></html>')
-        
-        myuser=User.objects.create_user(username,email,pass1)
-        myuser.first_name= fname
-        myuser.last_name= lname
-        myuser.save()
-        messages.success(request, "your account is created successfully")
-        return redirect('signin')
-
+    try:
+        if request.method == "POST":
+            username= request.POST['username']
+            fname= request.POST['fname']
+            lname= request.POST['lname']
+            email= request.POST['email']
+            pass1=request.POST['pass1']
+            pass2=request.POST['pass2']
+            if pass1 != pass2:
+                messages.error(request, "Passwords did not match")
+                return redirect('signup')
+            try:
+                validate_email(email)
+            except:
+                messages.error(request, "Email is invalid")
+                return redirect('signup')
+            user = User.objects.filter(email=email).exists()
+            if user:
+                messages.error(request, "Email alredy exists. Try another email adress")
+                return redirect('signup')
+            
+            
+            
+            myuser=User.objects.create_user(username,email,pass1)
+            myuser.first_name= fname
+            myuser.last_name= lname
+            myuser.save()
+            messages.success(request, "your account is created successfully")
+            return redirect('signin')
+    except:
+        messages.error(request, "Enter the credentials freshly")
+        return redirect("signup")
     return render(request, "authentication/signup.html")
+@csrf_exempt
 def signin(request):
-    return render(request, "authentication/signin.html")
-
-def signined(request):
-    
-    username= request.POST.get("username")
-    pass1=request.POST.get("pass1")
-    
-    user = authenticate(request, username= username, password= pass1)
-    if user is not None:
-        login(request, user)
-        return render(request, "authentication/signined.html")
-    else:
+    try:
+        return render(request, "authentication/signin.html")
+    except:
         messages.error(request, "Wrong Credentials")
+        return redirect("signin")
+@csrf_exempt   
+def signined(request):
+    try:
+        username= request.POST.get("username")
+        pass1=request.POST.get("pass1")
+        
+        user = authenticate(request, username= username, password= pass1)
+        if user is not None:
+            login(request, user)
+            return render(request, "authentication/signined.html")
+        else:
+            messages.error(request, "Wrong Credentials")
+            return redirect("signin")
+    except:
+        messages.error(request, "Enter the credentials freshly")
         return redirect("signin")
 
 def signout(request):
@@ -58,8 +87,8 @@ def list_booklets(request):
     else:
         booklets = Booklet.objects.all()
         return render(request, 'authentication/list_booklets.html', {'booklets': booklets, 'admin': False})
-    booklets = Booklet.objects.all()
-    return render(request, 'authentication/list_booklets.html', {'booklets': booklets})
+    #booklets = Booklet.objects.all()
+    #return render(request, 'authentication/list_booklets.html', {'booklets': booklets})
 
 @login_required(login_url='/login/')
 def delete_booklet(request, booklet_id):
@@ -79,8 +108,7 @@ def add_booklet(request):
     else:
         form = BookletForm()
     return render(request, 'authentication/add_booklet.html', {'form': form})
-def view_booklet(request, booklet_id):
-    booklet = get_object_or_404(Booklet, id=booklet_id)
-    filename = Object.model_attribute_name.path
-    response = FileResponse(open(filename, 'rb'))
-    return response
+'''def download_booklet(request, booklet_id):
+    booklet = Booklet.objects.get(id=booklet_id)
+    return redirect('list_booklets')
+'''

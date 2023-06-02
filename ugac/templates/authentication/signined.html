@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Booklet Repository</title>
+  <title>UGAC</title>
 </head>
-<body>
+<body style="text-align: center; background-color: aqua;">
   {% if user.is_authenticated %}
-    <p>Welcome, {{ user.username }}!</p>
-    <a href="{% url 'list_booklets' %}">Booklets</a>
+    <h2>Welcome {{ user.first_name }} {{ user.last_name }}!</h2>
+    <p> Click the following link to view the documents uploaded</p>
+    <a href="{% url 'list_booklets' %}"><button style="border-radius: 10px;font-size: larger;">BOOKLETS</button></a>
   {% else %}
     <a href="{% url 'signin' %}">Login</a> | <a href="{% url 'signup' %}">Signup</a>
   {% endif %}
